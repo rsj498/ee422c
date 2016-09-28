@@ -9,11 +9,13 @@ public class Node {
 	private boolean black;
 	private Node parent;
 	private String str;
+	private DFSHelpers helpers;
 	public Node(Node p, String word){
 		gray = false;
 		black = false;
 		parent = p;
 		str = word;
+		helpers = new DFSHelpers();
 	}
 	
 	public Node getParent() {
@@ -41,7 +43,7 @@ public class Node {
 		black = true;
 	}
 	
-	public boolean isNeighbor(String wordA, String wordB) {
+/*	public boolean isNeighbor(String wordA, String wordB) {
 		boolean diffByOne = false;
 		for (int i = 0; i < wordA.length(); i++) {
 			if (wordA.charAt(i) != wordB.charAt(i)) {
@@ -58,12 +60,12 @@ public class Node {
 		}
 		return false;
 	}
-	
+	*/
 
-	public ArrayList<Node> getNeighbors(Set<String> dict, ArrayList<String> visited) {
+	public ArrayList<Node> getNodeNeighbors(Set<String> dict, ArrayList<String> visited) {
 		ArrayList<Node> neighbors = new ArrayList<Node>();
 		for (String word : dict) {
-			if (isNeighbor(str, word)&&!visited.contains(word)) {
+			if (helpers.isNeighbor(str, word)&&!visited.contains(word)) {
 				neighbors.add(new Node(this, word));
 	//			dict.remove(word);
 				visited.add(word);

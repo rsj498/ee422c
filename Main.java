@@ -41,9 +41,10 @@ public class Main {
 		initialize();
 		
 		ArrayList<String> input = parse(kb);
-		ArrayList<String> ladder = getWordLadderDFS(input.get(0), input.get(1));
-		ArrayList<String> ladder2 = getWordLadderDFS("HELLO", "SAILS");
+		ArrayList<String> ladder = getWordLadderDFS(input.get(0), input.get(1)); //doesn't work for (panic, ochre) (palms, tutee)
+		ArrayList<String> ladder2 = getWordLadderBFS(input.get(0), input.get(1));
 		printLadder(ladder);
+		System.out.println("\nbfs: ");
 		printLadder(ladder2);
 	}
 	
@@ -135,9 +136,71 @@ public class Main {
 		// TODO some code
 		Set<String> dict = makeDictionary();
 		// TODO more code
+	/*	boolean found = false;
+		ArrayList<Node> q = new ArrayList<Node>();
+		ArrayList<String> ladder = new ArrayList<String>();
+		Node root = new Node(null, start);
+		q.add(root);
+		while(q.size()!=0){
+			Node head = q.get(0);
+			q.remove(0);
+			if(head.getString().equals(end)){
+				for(Node n : q){
+					ladder.add(n.getString());
+				}
+				return ladder;
+			}
+			if(!head.wasVisited()){
+				head.markVisited();
+				ArrayList<Node> neighbors = head.getNeighbors(dict);
+				for(Node n : neighbors){
+					if(!n.wasVisited()){
+						q.add(n);
+					}
+				}
+			}
+		}*/
+		ArrayList<Node> q = new ArrayList<Node>();
+		ArrayList<String> ladder = new ArrayList<String>();
+	//	ArrayList<String> visited = new ArrayList<String>();
+		Node root = new Node(null, start);
+		q.add(root);
+		Node foundKey = null;
+		while(q.size()!=0 && foundKey == null){
+			Node head = q.get(0);
+			q.remove(0);
+			foundKey = BFSHelper(head, end, dict, q, visited);
+		}
+		if(foundKey==null)
+			return null; // not found
+		else {
+			ladder.add(foundKey.getString());
+			while(foundKey.getParent()!=null){
+				foundKey = foundKey.getParent();
+				ladder.add(foundKey.getString());
+			}
+			return ladder;
+		}
 		
-		return null; // replace this line later with real return
 	}
+    
+    private static Node BFSHelper(Node root, String end, Set<String> dict, ArrayList<Node> q, ArrayList<String> visited){
+    	root.turnGray();
+    	visited.add(root.getString());
+    	ArrayList<Node> neighbors = root.getNodeNeighbors(dict, visited);
+    	for(Node n : neighbors){
+    		if(n.getString().equals(end)){
+    			return n;
+    		}
+	    	//if(!visited.contains(n.getString())/*!n.isGray()&&!n.isBlack()*/){
+	    		q.add(n);
+	    		System.out.printf("Neighbor of %s: %s\n", root.getString(), n.getString());
+	    		n.turnGray();
+    	//	}
+    	}
+    	root.turnBlack();
+    	return null;
+    }
     
 	public static Set<String>  makeDictionary () {
 		Set<String> words = new HashSet<String>();
@@ -156,8 +219,12 @@ public class Main {
 	}
 	
 	public static void printLadder(ArrayList<String> ladder) {
-		for (int i = 0; i < ladder.size(); i++) {
-			System.out.println(ladder.get(i));
+		if(ladder == null)
+			System.out.println("not found");
+		else{
+			for (int i = 0; i < ladder.size(); i++) {
+				System.out.println(ladder.get(i));
+			}
 		}
 	}
 	// TODO
