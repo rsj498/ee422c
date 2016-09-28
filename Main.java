@@ -24,7 +24,7 @@ public class Main {
 	static DFSHelpers helpers;
 	static int depth;
 	static ArrayList<String> visited;
-	static String start, end;
+	static String startWord, endWord;
 	
 	public static void main(String[] args) throws Exception {
 		
@@ -66,14 +66,14 @@ public class Main {
 		while (input.charAt(i) != ' ') {
 			i++;
 		}
-		start = input.substring(0,  i);
-		start = start.toUpperCase();
-		end = input.substring(i + 1, input.length());
-		end = end.toUpperCase();
+		startWord = input.substring(0,  i);
+		startWord = startWord.toUpperCase();
+		endWord = input.substring(i + 1, input.length());
+		endWord = endWord.toUpperCase();
 		
 		ArrayList<String> words = new ArrayList<String>();
-		words.add(start);
-		words.add(end);
+		words.add(startWord);
+		words.add(endWord);
 		return words;
 	}
 	/**
@@ -83,6 +83,8 @@ public class Main {
 	 * @return the word ladder
 	 */
 	public static ArrayList<String> getWordLadderDFS(String start, String end) {
+		start = start.toUpperCase();
+		end = end.toUpperCase();
 		Set<String> dict = makeDictionary();
 		ArrayList<String> neighbors = helpers.getNeighbors(start, dict, visited);
 		
@@ -125,6 +127,8 @@ public class Main {
 		
 		path.add(start);
 		if (depth == 0) { // Finished ladder
+			startWord = start;
+			endWord = path.get(0);
 			visited.clear();
 			path = helpers.reverse(path);
 		}
@@ -159,12 +163,12 @@ public class Main {
 	public static void printLadder(ArrayList<String> ladder) {
 		// No ladder exists
 		if (ladder == null) {
-			System.out.println("no word ladder can be found between " + start.toLowerCase() + " and " + end.toLowerCase() + ".");
+			System.out.println("no word ladder can be found between " + startWord.toLowerCase() + " and " + endWord.toLowerCase() + ".");
 			return;
 		}
 		
 		// Ladder does exist
-		System.out.println("a " + (ladder.size() - 2) + "-rung word ladder exists between " + start.toLowerCase() + " and " + end.toLowerCase() + ".");
+		System.out.println("a " + (ladder.size() - 2) + "-rung word ladder exists between " + startWord.toLowerCase() + " and " + endWord.toLowerCase() + ".");
 		for (int i = 0; i < ladder.size(); i++) {
 			System.out.println(ladder.get(i).toLowerCase());
 		}
