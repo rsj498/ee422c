@@ -23,6 +23,7 @@ public class Main {
 	// static variables and constants only here.
 	static Set<String> dict;
 	static DFSHelpers helpers;
+	static int depth;
 	
 	public static void main(String[] args) throws Exception {
 		
@@ -41,7 +42,9 @@ public class Main {
 		
 		ArrayList<String> input = parse(kb);
 		ArrayList<String> ladder = getWordLadderDFS(input.get(0), input.get(1));
+		ArrayList<String> ladder2 = getWordLadderDFS("HELLO", "SAILS");
 		printLadder(ladder);
+		printLadder(ladder2);
 	}
 	
 	public static void initialize() {
@@ -50,6 +53,7 @@ public class Main {
 		// only once at the start of main.
 		dict = makeDictionary();
 		helpers = new DFSHelpers();
+		depth = 0;
 	}
 	
 	/**
@@ -79,7 +83,6 @@ public class Main {
 	}
 	
 	public static ArrayList<String> getWordLadderDFS(String start, String end) {
-		
 		ArrayList<String> neighbors = helpers.getNeighbors(start, dict);
 		// Base Case: Found a word that is directly connected to end
 		if (neighbors.contains(end)) {
@@ -98,7 +101,9 @@ public class Main {
 		neighbors = helpers.sortNeighbors(neighbors, end);
 		ArrayList<String> path = new ArrayList<String>();
 		for (String currentWord : neighbors) {
+			depth++;
 			path = getWordLadderDFS(currentWord, end);
+			depth--;
 			if (path == null) {
 				dict.remove(currentWord);
 				continue;
@@ -110,8 +115,10 @@ public class Main {
 		if (path == null) {
 			return null;
 		}
-		
 		path.add(start);
+		if (depth == 0) {
+			dict = makeDictionary();
+		}
 		return path;
 	}
 	
