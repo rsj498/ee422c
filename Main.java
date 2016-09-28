@@ -24,6 +24,7 @@ public class Main {
 	static DFSHelpers helpers;
 	static int depth;
 	static ArrayList<String> visited;
+	static String start, end;
 	
 	public static void main(String[] args) throws Exception {
 		
@@ -39,12 +40,6 @@ public class Main {
 			ps = System.out;			// default to Stdout
 		}
 		initialize();
-		
-		// Our additions
-		ArrayList<String> input = parse(kb);
-		if (input == null) {
-			return;
-		}
 	}
 	
 	public static void initialize() {
@@ -64,21 +59,21 @@ public class Main {
 	public static ArrayList<String> parse(Scanner keyboard) {
 		String input = keyboard.nextLine();
 		if (input.equals("/quit")) {
-			return null;
+			System.exit(0);
 		}
 		
 		int i = 0;
 		while (input.charAt(i) != ' ') {
 			i++;
 		}
-		String firstWord = input.substring(0,  i);
-		firstWord = firstWord.toUpperCase();
-		String secondWord = input.substring(i + 1, input.length());
-		secondWord = secondWord.toUpperCase();
+		start = input.substring(0,  i);
+		start = start.toUpperCase();
+		end = input.substring(i + 1, input.length());
+		end = end.toUpperCase();
 		
 		ArrayList<String> words = new ArrayList<String>();
-		words.add(firstWord);
-		words.add(secondWord);
+		words.add(start);
+		words.add(end);
 		return words;
 	}
 	/**
@@ -90,6 +85,7 @@ public class Main {
 	public static ArrayList<String> getWordLadderDFS(String start, String end) {
 		Set<String> dict = makeDictionary();
 		ArrayList<String> neighbors = helpers.getNeighbors(start, dict, visited);
+		
 		// Base Case: Found a word that is directly connected to end
 		if (neighbors.contains(end)) {
 			ArrayList<String> finPath = new ArrayList<String>();
@@ -103,6 +99,7 @@ public class Main {
 			return null;
 		}
 		
+		// Allow this path to be used again
 		visited.add(start);
 		
 		neighbors = helpers.sortNeighbors(neighbors, end);
@@ -111,19 +108,23 @@ public class Main {
 			depth++;
 			path = getWordLadderDFS(currentWord, end);
 			depth--;
-			if (path == null) {
+			
+			if (path == null) { // Dead end, don't use this path again
 				visited.add(currentWord);
 				continue;
 			}
-			else {
+			else { // Found a working path
 				break;
 			}
 		}
+		
+		// No path found
 		if (path == null) {
 			return null;
 		}
+		
 		path.add(start);
-		if (depth == 0) {
+		if (depth == 0) { // Finished ladder
 			visited.clear();
 			path = helpers.reverse(path);
 		}
@@ -156,10 +157,17 @@ public class Main {
 	}
 	
 	public static void printLadder(ArrayList<String> ladder) {
-		for (int i = 0; i < ladder.size(); i++) {
-			System.out.println(ladder.get(i));
+		// No ladder exists
+		if (ladder == null) {
+			System.out.println("no word ladder can be found between " + start.toLowerCase() + " and " + end.toLowerCase() + ".");
+			return;
 		}
+		
+		// Ladder does exist
+		System.out.println("a " + (ladder.size() - 2) + "-rung word ladder exists between " + start.toLowerCase() + " and " + end.toLowerCase() + ".");
+		for (int i = 0; i < ladder.size(); i++) {
+			System.out.println(ladder.get(i).toLowerCase());
+		}
+		return;
 	}
-	// TODO
-	// Other private static methods here
 }
