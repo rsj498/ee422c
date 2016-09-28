@@ -9,28 +9,34 @@ public class Testing {
 	Scanner kb = new Scanner(System.in);
 	
 	@Test
-	public void testDFS1() {
+	public void testDFSShort() {
 		Main.initialize();
-		ArrayList<String> ladder = Main.getWordLadderDFS("STONE", "MONEY");
+		ArrayList<String> ladder = Main.getWordLadderDFS("hello", "sails");
+		Main.printLadder(ladder);
+		HashSet<String> ladderSet = new HashSet<String>(ladder);
+		assertEquals(ladder.size(), ladderSet.size());
+	}
+	
+	
+	public void testDFSLong() {
+		ArrayList<String> ladder = Main.getWordLadderDFS("bumps", "allee");
 		Main.printLadder(ladder);
 		HashSet<String> ladderSet = new HashSet<String>(ladder);
 		assertEquals(ladder.size(), ladderSet.size());
 	}
 	
 	@Test
-	public void testDFS2() {
-		ArrayList<String> ladder = Main.getWordLadderDFS("HELLO", "SAILS");
+	public void testDFSZeroRung() {
+		ArrayList<String> ladder = Main.getWordLadderDFS("smart", "start");
 		Main.printLadder(ladder);
 		HashSet<String> ladderSet = new HashSet<String>(ladder);
 		assertEquals(ladder.size(), ladderSet.size());
 	}
-
+	
 	@Test
-	public void testDFS3() {
-		ArrayList<String> ladder = Main.getWordLadderDFS("SMART", "MONEY");
+	public void testDFSNoRung() {
+		ArrayList<String> ladder = Main.getWordLadderDFS("jazzy", "leady");
 		Main.printLadder(ladder);
-		HashSet<String> ladderSet = new HashSet<String>(ladder);
-		assertEquals(ladder.size(), ladderSet.size());
 	}
 	
 	

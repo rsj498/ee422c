@@ -40,12 +40,6 @@ public class Main {
             ps = System.out;			// default to Stdout
         }
         initialize();
-        ArrayList<String> input = parse(kb);
-        /*		 ArrayList<String> ladder = getWordLadderDFS(input.get(0), input.get(1));
-         ArrayList<String> ladder2 = getWordLadderBFS(input.get(0), input.get(1));
-         printLadder(ladder);
-         System.out.println("\nbfs: ");
-         printLadder(ladder2);*/
     }
     
     public static void initialize() {
@@ -99,11 +93,20 @@ public class Main {
             ArrayList<String> finPath = new ArrayList<String>();
             finPath.add(end);
             finPath.add(start);
+            if (depth == 0) {
+            	startWord = start;
+        		endWord = end;
+        		finPath = helper.reverse(finPath);
+            }
             return finPath;
         }
         
         // No path
         if (neighbors.isEmpty()) {
+        	if (depth == 0) {
+        		startWord = start;
+        		endWord = end;
+        	}
             return null;
         }
         
