@@ -21,9 +21,9 @@ import java.io.*;
 public class Main {
 	
 	// static variables and constants only here.
-	static Set<String> dict;
 	static DFSHelpers helpers;
 	static int depth;
+	static ArrayList<String> visited;
 	
 	public static void main(String[] args) throws Exception {
 		
@@ -51,9 +51,9 @@ public class Main {
 		// initialize your static variables or constants here.
 		// We will call this method before running our JUNIT tests.  So call it 
 		// only once at the start of main.
-		dict = makeDictionary();
 		helpers = new DFSHelpers();
 		depth = 0;
+		visited = new ArrayList<String>();
 	}
 	
 	/**
@@ -83,7 +83,8 @@ public class Main {
 	}
 	
 	public static ArrayList<String> getWordLadderDFS(String start, String end) {
-		ArrayList<String> neighbors = helpers.getNeighbors(start, dict);
+		Set<String> dict = makeDictionary();
+		ArrayList<String> neighbors = helpers.getNeighbors(start, dict, visited);
 		// Base Case: Found a word that is directly connected to end
 		if (neighbors.contains(end)) {
 			ArrayList<String> finPath = new ArrayList<String>();
@@ -97,7 +98,9 @@ public class Main {
 			return null;
 		}
 		
-		dict.remove(start);
+		// dict.remove(start);
+		visited.add(start);
+		
 		neighbors = helpers.sortNeighbors(neighbors, end);
 		ArrayList<String> path = new ArrayList<String>();
 		for (String currentWord : neighbors) {
@@ -105,7 +108,8 @@ public class Main {
 			path = getWordLadderDFS(currentWord, end);
 			depth--;
 			if (path == null) {
-				dict.remove(currentWord);
+				// dict.remove(currentWord);
+				visited.add(currentWord);
 				continue;
 			}
 			else {
@@ -117,7 +121,7 @@ public class Main {
 		}
 		path.add(start);
 		if (depth == 0) {
-			dict = makeDictionary();
+			visited.clear();
 		}
 		return path;
 	}
