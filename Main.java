@@ -40,11 +40,11 @@ public class Main {
 		}
 		initialize();
 		
+		// Our additions
 		ArrayList<String> input = parse(kb);
-		ArrayList<String> ladder = getWordLadderDFS(input.get(0), input.get(1));
-		ArrayList<String> ladder2 = getWordLadderDFS("HELLO", "SAILS");
-		printLadder(ladder);
-		printLadder(ladder2);
+		if (input == null) {
+			return;
+		}
 	}
 	
 	public static void initialize() {
@@ -63,7 +63,7 @@ public class Main {
 	 */
 	public static ArrayList<String> parse(Scanner keyboard) {
 		String input = keyboard.nextLine();
-		if (input == "/quit") {
+		if (input.equals("/quit")) {
 			return null;
 		}
 		
