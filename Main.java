@@ -22,6 +22,7 @@ public class Main {
 	
 	// static variables and constants only here.
 	static Set<String> dict;
+	static DFSHelpers helpers;
 	
 	public static void main(String[] args) throws Exception {
 		
@@ -48,6 +49,7 @@ public class Main {
 		// We will call this method before running our JUNIT tests.  So call it 
 		// only once at the start of main.
 		dict = makeDictionary();
+		helpers = new DFSHelpers();
 	}
 	
 	/**
@@ -76,78 +78,9 @@ public class Main {
 		return words;
 	}
 	
-	public static boolean isNeighbor(String wordA, String wordB) {
-		boolean diffByOne = false;
-		for (int i = 0; i < wordA.length(); i++) {
-			if (wordA.charAt(i) != wordB.charAt(i)) {
-				if (diffByOne) {
-					return false;
-				}
-				else {
-					diffByOne = true;
-				}
-			}
-		}
-		if (diffByOne) {
-			return true;
-		}
-		return false;
-	}
-	
-	public static boolean diffByTwo(String a, String b) {
-		int diffCount = 0;
-		for (int i = 0; i < a.length(); i++) {
-			if (a.charAt(i) != b.charAt(i)) {
-				if (diffCount > 2) {
-					return false;
-				}
-				else {
-					diffCount++;
-				}
-			}
-		}
-		if (diffCount <= 2) {
-			return true;
-		}
-		return false;
-	}
-	
-	public static ArrayList<String> getNeighbors(String start, Set<String> dict) {
-		ArrayList<String> neighbors = new ArrayList<String>();
-		for (String word : dict) {
-			if (isNeighbor(start, word)) {
-				neighbors.add(word);
-			}
-		}
-		return neighbors;
-	}
-	
-	public static ArrayList<String> reverse (ArrayList<String> path) {
-		ArrayList<String> reversed = new ArrayList<String>();
-		for (int i = path.size() - 1; i >= 0; i--) {
-			reversed.add(path.get(i));
-		}
-		return reversed;
-	}
-	
-	public static ArrayList<String> sortNeighbors (ArrayList<String> neighbors, String end) {
-		ArrayList<String> sortedNeighbors = new ArrayList<String>();
-		for (int i = 0; i < neighbors.size(); i++) {
-			if (diffByTwo(neighbors.get(i), end)) {
-				sortedNeighbors.add(neighbors.get(i));
-			}
-		}
-		for (int i = 0; i < neighbors.size(); i++) {
-			if (!sortedNeighbors.contains(neighbors.get(i))) {
-				sortedNeighbors.add(neighbors.get(i));
-			}
-		}
-		return sortedNeighbors;
-	}
-	
 	public static ArrayList<String> getWordLadderDFS(String start, String end) {
 		
-		ArrayList<String> neighbors = getNeighbors(start, dict);
+		ArrayList<String> neighbors = helpers.getNeighbors(start, dict);
 		// Base Case: Found a word that is directly connected to end
 		if (neighbors.contains(end)) {
 			ArrayList<String> finPath = new ArrayList<String>();
@@ -162,7 +95,7 @@ public class Main {
 		}
 		
 		dict.remove(start);
-		neighbors = sortNeighbors(neighbors, end);
+		neighbors = helpers.sortNeighbors(neighbors, end);
 		ArrayList<String> path = new ArrayList<String>();
 		for (String currentWord : neighbors) {
 			path = getWordLadderDFS(currentWord, end);
@@ -208,7 +141,9 @@ public class Main {
 	}
 	
 	public static void printLadder(ArrayList<String> ladder) {
-		
+		for (int i = 0; i < ladder.size(); i++) {
+			System.out.println(ladder.get(i));
+		}
 	}
 	// TODO
 	// Other private static methods here
