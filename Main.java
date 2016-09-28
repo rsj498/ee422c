@@ -136,13 +136,48 @@ public class Main {
 	}
 	
     public static ArrayList<String> getWordLadderBFS(String start, String end) {
-		
-		// TODO some code
-		Set<String> dict = makeDictionary();
-		// TODO more code
-		
-		return null; // replace this line later with real return
-	}
+        
+        Set<String> dict = makeDictionary();
+        ArrayList<Node> q = new ArrayList<Node>();
+        ArrayList<String> ladder = new ArrayList<String>();
+        Node root = new Node(null, start);
+        q.add(root);
+        Node foundKey = null;
+        while(q.size()!=0 && foundKey == null){
+            Node head = q.get(0);
+            q.remove(0);
+            foundKey = BFSHelper(head, end, dict, q, visited);
+        }
+        if(foundKey==null)
+            return null; // not found
+        else {
+            ladder.add(foundKey.getString());
+            while(foundKey.getParent()!=null){
+                foundKey = foundKey.getParent();
+                ladder.add(foundKey.getString());
+            }
+            return ladder;
+        }
+        
+    }
+    
+    private static Node BFSHelper(Node root, String end, Set<String> dict, ArrayList<Node> q, ArrayList<String> visited){
+        root.turnGray();
+        visited.add(root.getString());
+        ArrayList<Node> neighbors = root.getNodeNeighbors(dict, visited);
+        for(Node n : neighbors){
+            if(n.getString().equals(end)){
+                return n;
+            }
+            //if(!visited.contains(n.getString())/*!n.isGray()&&!n.isBlack()*/){
+            q.add(n);
+            System.out.printf("Neighbor of %s: %s\n", root.getString(), n.getString());
+            n.turnGray();
+            //	}
+        }
+        root.turnBlack();
+        return null;
+    }
     
 	public static Set<String>  makeDictionary () {
 		Set<String> words = new HashSet<String>();
