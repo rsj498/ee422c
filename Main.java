@@ -81,7 +81,12 @@ public class Main {
 		words.add(secondWord);
 		return words;
 	}
-	
+	/**
+	 * This method creates a word ladder using DFS
+	 * @param start is the start word
+	 * @param end is the end word
+	 * @return the word ladder
+	 */
 	public static ArrayList<String> getWordLadderDFS(String start, String end) {
 		Set<String> dict = makeDictionary();
 		ArrayList<String> neighbors = helpers.getNeighbors(start, dict, visited);
@@ -98,7 +103,6 @@ public class Main {
 			return null;
 		}
 		
-		// dict.remove(start);
 		visited.add(start);
 		
 		neighbors = helpers.sortNeighbors(neighbors, end);
@@ -108,7 +112,6 @@ public class Main {
 			path = getWordLadderDFS(currentWord, end);
 			depth--;
 			if (path == null) {
-				// dict.remove(currentWord);
 				visited.add(currentWord);
 				continue;
 			}
@@ -122,6 +125,7 @@ public class Main {
 		path.add(start);
 		if (depth == 0) {
 			visited.clear();
+			path = helpers.reverse(path);
 		}
 		return path;
 	}
