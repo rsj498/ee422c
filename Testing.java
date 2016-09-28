@@ -8,23 +8,37 @@ import org.junit.Test;
 public class Testing {
 	Scanner kb = new Scanner(System.in);
 	
+<<<<<<< HEAD
 	
 	public void testDFSLong() {
 		ArrayList<String> ladder = Main.getWordLadderDFS("bumps", "allee");
-		Main.printLadder(ladder);
-		HashSet<String> ladderSet = new HashSet<String>(ladder);
-		assertEquals(ladder.size(), ladderSet.size());
-	}
-	
+=======
 	@Test
 	public void testDFSShort() {
 		Main.initialize();
 		ArrayList<String> ladder = Main.getWordLadderDFS("hello", "sails");
+>>>>>>> 14ce228f15e57eeb5a450b87bbbd9044e2d7683c
 		Main.printLadder(ladder);
 		HashSet<String> ladderSet = new HashSet<String>(ladder);
 		assertEquals(ladder.size(), ladderSet.size());
 	}
 	
+<<<<<<< HEAD
+	@Test
+	public void testDFSShort() {
+		Main.initialize();
+		ArrayList<String> ladder = Main.getWordLadderDFS("hello", "sails");
+=======
+	
+	public void testDFSLong() {
+		ArrayList<String> ladder = Main.getWordLadderDFS("bumps", "allee");
+>>>>>>> 14ce228f15e57eeb5a450b87bbbd9044e2d7683c
+		Main.printLadder(ladder);
+		HashSet<String> ladderSet = new HashSet<String>(ladder);
+		assertEquals(ladder.size(), ladderSet.size());
+	}
+	
+<<<<<<< HEAD
 	
 	public void testDFSZeroRung() {
 		ArrayList<String> ladder2 = Main.getWordLadderDFS("smart", "start");
@@ -36,6 +50,20 @@ public class Testing {
 	
 	public void testDFSNoRung() {
 		
+=======
+	@Test
+	public void testDFSZeroRung() {
+		ArrayList<String> ladder = Main.getWordLadderDFS("smart", "start");
+		Main.printLadder(ladder);
+		HashSet<String> ladderSet = new HashSet<String>(ladder);
+		assertEquals(ladder.size(), ladderSet.size());
+>>>>>>> 14ce228f15e57eeb5a450b87bbbd9044e2d7683c
+	}
+	
+	@Test
+	public void testDFSNoRung() {
+		ArrayList<String> ladder = Main.getWordLadderDFS("jazzy", "leady");
+		Main.printLadder(ladder);
 	}
 	
 	
