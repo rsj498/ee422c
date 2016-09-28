@@ -93,6 +93,11 @@ public class Main {
 			ArrayList<String> finPath = new ArrayList<String>();
 			finPath.add(end);
 			finPath.add(start);
+			if (depth == 0) {
+				startWord = start;
+				endWord = finPath.get(0);
+				finPath = helpers.reverse(finPath);
+			}
 			return finPath;
 		}
 		

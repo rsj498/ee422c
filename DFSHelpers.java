@@ -90,6 +90,18 @@ public class DFSHelpers {
 		return reversed;
 	}
 	
+	public boolean containsSimilar (String a, String b) {
+		int matches = 0;
+		for (int i = 0; i < a.length(); i++) {
+			if (b.contains(a.substring(i, i+1))) {
+				matches++;
+			}
+		}
+		if (matches >= 3) {
+			return true;
+		}
+		return false;
+	}
 	/**
 	 * This method sorts a word's neighbors so that those words
 	 * which differ from the end word by at most two characters
@@ -101,8 +113,14 @@ public class DFSHelpers {
 	 */
 	public ArrayList<String> sortNeighbors (ArrayList<String> neighbors, String end) {
 		ArrayList<String> sortedNeighbors = new ArrayList<String>();
+		
 		for (int i = 0; i < neighbors.size(); i++) {
 			if (diffByTwo(neighbors.get(i), end)) {
+				sortedNeighbors.add(neighbors.get(i));
+			}
+		}
+		for (int i = 0; i < neighbors.size(); i++) {
+			if (!sortedNeighbors.contains(neighbors.get(i)) && containsSimilar(neighbors.get(i), end)) {
 				sortedNeighbors.add(neighbors.get(i));
 			}
 		}
