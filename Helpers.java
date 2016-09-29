@@ -1,3 +1,16 @@
+/* WORD LADDER Main.java
+ * EE422C Project 3 submission by
+ * Jessica Slaughter
+ * jts3329
+ * 16470
+ * Rebecca Jiang
+ * rsj498
+ * 16470
+ * Slip days used: <0>
+ * Git URL: https://github.com/rsj498/ee422c
+ * Fall 2016
+ */
+
 package assignment3;
 
 import java.util.ArrayList;

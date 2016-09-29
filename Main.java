@@ -1,14 +1,13 @@
 /* WORD LADDER Main.java
  * EE422C Project 3 submission by
- * Replace <...> with your actual data.
- * <Student1 Name>
- * <Student1 EID>
- * <Student1 5-digit Unique No.>
- * <Student2 Name>
- * <Student2 EID>
- * <Student2 5-digit Unique No.>
+ * Jessica Slaughter
+ * jts3329
+ * 16470
+ * Rebecca Jiang
+ * rsj498
+ * 16470
  * Slip days used: <0>
- * Git URL:
+ * Git URL: https://github.com/rsj498/ee422c
  * Fall 2016
  */
 
@@ -67,9 +66,7 @@ public class Main {
             i++;
         }
         startWord = input.substring(0,  i);
-        startWord = startWord.toUpperCase();
         endWord = input.substring(i + 1, input.length());
-        endWord = endWord.toUpperCase();
         
         ArrayList<String> words = new ArrayList<String>();
         words.add(startWord);
