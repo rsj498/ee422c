@@ -1,14 +1,13 @@
 /* WORD LADDER Main.java
  * EE422C Project 3 submission by
- * Replace <...> with your actual data.
- * <Student1 Name>
- * <Student1 EID>
- * <Student1 5-digit Unique No.>
- * <Student2 Name>
- * <Student2 EID>
- * <Student2 5-digit Unique No.>
+ * Jessica Slaughter
+ * jts3329
+ * 16470
+ * Rebecca Jiang
+ * rsj498
+ * 16470
  * Slip days used: <0>
- * Git URL:
+ * Git URL: https://github.com/rsj498/ee422c
  * Fall 2016
  */
 
@@ -40,12 +39,6 @@ public class Main {
             ps = System.out;			// default to Stdout
         }
         initialize();
-        ArrayList<String> input = parse(kb);
-        /*		 ArrayList<String> ladder = getWordLadderDFS(input.get(0), input.get(1));
-         ArrayList<String> ladder2 = getWordLadderBFS(input.get(0), input.get(1));
-         printLadder(ladder);
-         System.out.println("\nbfs: ");
-         printLadder(ladder2);*/
     }
     
     public static void initialize() {
@@ -73,9 +66,10 @@ public class Main {
             i++;
         }
         startWord = input.substring(0,  i);
-        startWord = startWord.toUpperCase();
         endWord = input.substring(i + 1, input.length());
-        endWord = endWord.toUpperCase();
+        startWord = startWord.toLowerCase();
+        endWord = endWord.toLowerCase();
+        
         
         ArrayList<String> words = new ArrayList<String>();
         words.add(startWord);
@@ -89,81 +83,104 @@ public class Main {
      * @return the word ladder
      */
     public static ArrayList<String> getWordLadderDFS(String start, String end) {
-        start = start.toUpperCase();
-        end = end.toUpperCase();
-        Set<String> dict = makeDictionary();
-        ArrayList<String> neighbors = helper.getNeighbors(start, dict, visited);
-        
-        // Base Case: Found a word that is directly connected to end
-        if (neighbors.contains(end)) {
-            ArrayList<String> finPath = new ArrayList<String>();
-            finPath.add(end);
-            finPath.add(start);
-            return finPath;
-        }
-        
-        // No path
-        if (neighbors.isEmpty()) {
-            return null;
-        }
-        
-        // Allow this path to be used again
-        visited.add(start);
-        
-        neighbors = helper.sortNeighbors(neighbors, end);
-        ArrayList<String> path = new ArrayList<String>();
-        for (String currentWord : neighbors) {
-            depth++;
-            path = getWordLadderDFS(currentWord, end);
-            depth--;
-            
-            if (path == null) { // Dead end, don't use this path again
-                visited.add(currentWord);
-                continue;
-            }
-            else { // Found a working path
-                break;
-            }
-        }
-        
-        // No path found
-        if (path == null) {
-            return null;
-        }
-        
-        path.add(start);
-        if (depth == 0) { // Finished ladder
-            startWord = start;
-            endWord = path.get(0);
-            visited.clear();
-            path = helper.reverse(path);
-        }
-        return path;
+    	start = start.toUpperCase();
+		end = end.toUpperCase();
+		Set<String> dict = makeDictionary();
+		ArrayList<String> neighbors = helper.getNeighbors(start, dict, visited);
+		
+		// Base Case: Found a word that is directly connected to end
+		if (neighbors.contains(end)) {
+			ArrayList<String> finPath = new ArrayList<String>();
+			finPath.add(end);
+			finPath.add(start);
+			if (depth == 0) {
+				startWord = start;
+				endWord = finPath.get(0);
+				finPath = helper.reverse(finPath);
+			}
+			return finPath;
+		}
+		
+		// No path
+		if (neighbors.isEmpty()) {
+			if (depth == 0) {
+				startWord = start;
+				endWord = end;
+				ArrayList<String> emptyArray = new ArrayList<String>();
+				return emptyArray;
+			}
+			return null;
+		}
+		
+		// Allow this path to be used again
+		visited.add(start);
+		
+		neighbors = helper.sortNeighbors(neighbors, end);
+		ArrayList<String> path = new ArrayList<String>();
+		for (String currentWord : neighbors) {
+			depth++;
+			path = getWordLadderDFS(currentWord, end);
+			depth--;
+			
+			if (path == null) { // Dead end, don't use this path again
+				visited.add(currentWord);
+				continue;
+			}
+			else { // Found a working path
+				break;
+			}
+		}
+		
+		// No path found
+		if (path == null) {
+			if (depth == 0) {
+				startWord = start;
+				endWord = end;
+				ArrayList<String> emptyArray = new ArrayList<String>();
+				return emptyArray;
+			}
+			return null;
+		}
+		
+		path.add(start);
+		if (depth == 0) { // Finished ladder
+			startWord = start;
+			endWord = path.get(0);
+			visited.clear();
+			path = helper.reverse(path);
+		}
+		return path;
     }
     
     public static ArrayList<String> getWordLadderBFS(String start, String end) {
-        
-        Set<String> dict = makeDictionary();
+    	
+    	startWord = start.toUpperCase();
+    	endWord = end.toUpperCase();
+    	Set<String> dict = makeDictionary();
         ArrayList<Node> q = new ArrayList<Node>();
         ArrayList<String> ladder = new ArrayList<String>();
-        Node root = new Node(null, start);
+        Node root = new Node(null, startWord);
         q.add(root);
         Node foundKey = null;
         while(q.size()!=0 && foundKey == null){
             Node head = q.get(0);
             q.remove(0);
-            foundKey = BFSHelper(head, end, dict, q, visited);
+            foundKey = BFSHelper(head, endWord, dict, q, visited);
         }
         if(foundKey==null)
-            return null; // not found
+            return ladder; // not found
         else {
             ladder.add(foundKey.getString());
             while(foundKey.getParent()!=null){
                 foundKey = foundKey.getParent();
                 ladder.add(foundKey.getString());
+      
             }
+           ladder = helper.reverse(ladder);
+            visited.clear();
             return ladder;
         }
+        
         
     }
     
@@ -175,11 +192,8 @@ public class Main {
             if(n.getString().equals(end)){
                 return n;
             }
-            //if(!visited.contains(n.getString())/*!n.isGray()&&!n.isBlack()*/){
-            q.add(n);
-            System.out.printf("Neighbor of %s: %s\n", root.getString(), n.getString());
+            q.add(n);    
             n.turnGray();
-            //	}
         }
         root.turnBlack();
         return null;
@@ -203,7 +217,7 @@ public class Main {
     
     public static void printLadder(ArrayList<String> ladder) {
         // No ladder exists
-        if (ladder == null) {
+        if (ladder.isEmpty()) {
             System.out.println("no word ladder can be found between " + startWord.toLowerCase() + " and " + endWord.toLowerCase() + ".");
             return;
         }
