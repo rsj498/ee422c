@@ -103,18 +103,6 @@ public class Helpers {
 		return reversed;
 	}
 	
-	public boolean containsSimilar (String a, String b) {
-		int matches = 0;
-		for (int i = 0; i < a.length(); i++) {
-			if (b.contains(a.substring(i, i+1))) {
-				matches++;
-			}
-		}
-		if (matches >= 3) {
-			return true;
-		}
-		return false;
-	}
 	/**
 	 * This method sorts a word's neighbors so that those words
 	 * which differ from the end word by at most two characters
